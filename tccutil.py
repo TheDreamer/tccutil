@@ -180,11 +180,17 @@ def verbose_output(*args):
 def list_clients():
   #------------------------
   open_database()
-  c.execute("SELECT client from access")
+  if verbose:
+    c.execute("SELECT client,allowed from access")
+  else:
+    c.execute("SELECT client from access")
   verbose_output("Fetching Entries from Database...\n")
   for row in c.fetchall():
     # Print each entry in the Accessibility pane.
-    print row[0]
+    if verbose:
+      print "% 8s: %s" % (("Enabled" if row[1] else "Disabled"), row[0])
+    else:
+      print row[0]
   verbose_output("")
 
 
